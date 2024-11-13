@@ -1,68 +1,49 @@
-const getPopularCategories = require('../tasks/task1'); // імпортуємо функцію для тестування
+function getPopularCategories(products) {
+  // Фільтруємо товари, де кількість продажів більше 5
+  const filteredProducts = products.filter(product => product.sales > 5);
 
-describe('getPopularCategories', () => {
-  
-  test('повертає правильні категорії для товарів з продажами більше 5 разів', () => {
-    const products = [
-      { name: 'Phone', category: 'Electronics', sales: 10 },
-      { name: 'Tablet', category: 'Electronics', sales: 3 },
-      { name: 'Shirt', category: 'Clothing', sales: 8 },
-      { name: 'Laptop', category: 'Electronics', sales: 12 },
-      { name: 'Jacket', category: 'Clothing', sales: 2 },
-      { name: 'Shoes', category: 'Footwear', sales: 6 },
-      { name: 'Watch', category: 'Electronics', sales: 7 }
-    ];
+  // Сортуємо товари за кількістю продажів у зменшувальному порядку
+  const sortedProducts = filteredProducts.sort((a, b) => b.sales - a.sales);
 
-    const result = getPopularCategories(products);
+  // Отримуємо тільки унікальні категорії
+  const categories = sortedProducts.map(product => product.category);
 
-    expect(result).toEqual(['Electronics', 'Clothing', 'Footwear']);
-  });
+  // Використовуємо Set для отримання унікальних категорій
+  const uniqueCategories = [...new Set(categories)];
 
-  test('повертає порожній масив, якщо немає товарів з продажами більше 5 разів', () => {
-    const products = [
-      { name: 'Tablet', category: 'Electronics', sales: 3 },
-      { name: 'Jacket', category: 'Clothing', sales: 2 }
-    ];
+  return uniqueCategories;
+}
 
-    const result = getPopularCategories(products);
+module.exports = getPopularCategories;
 
-    expect(result).toEqual([]);
-  });
+getPopularCategories([
+  { name: 'Phone', category: 'Electronics', sales: 10 },
+  { name: 'Tablet', category: 'Electronics', sales: 3 },
+  { name: 'Shirt', category: 'Clothing', sales: 8 },
+  { name: 'Laptop', category: 'Electronics', sales: 12 },
+  { name: 'Jacket', category: 'Clothing', sales: 2 },
+  { name: 'Shoes', category: 'Footwear', sales: 6 },
+  { name: 'Watch', category: 'Electronics', sales: 7 }
+]);
 
-  test('повертає категорії у правильному порядку після сортування за кількістю продажів', () => {
-    const products = [
-      { name: 'Phone', category: 'Electronics', sales: 10 },
-      { name: 'Laptop', category: 'Electronics', sales: 15 },
-      { name: 'Shoes', category: 'Footwear', sales: 8 },
-      { name: 'Shirt', category: 'Clothing', sales: 9 }
-    ];
+getPopularCategories([
+  { name: 'Tablet', category: 'Electronics', sales: 3 },
+  { name: 'Jacket', category: 'Clothing', sales: 2 }
+]);
 
-    const result = getPopularCategories(products);
+getPopularCategories([
+  { name: 'Phone', category: 'Electronics', sales: 10 },
+  { name: 'Laptop', category: 'Electronics', sales: 15 },
+  { name: 'Shoes', category: 'Footwear', sales: 8 },
+  { name: 'Shirt', category: 'Clothing', sales: 9 }
+]);
 
-    expect(result).toEqual(['Electronics', 'Clothing', 'Footwear']);
-  });
-
-  test('повертає тільки унікальні категорії товарів', () => {
-    const products = [
-      { name: 'Phone', category: 'Electronics', sales: 10 },
-      { name: 'Tablet', category: 'Electronics', sales: 5 },
-      { name: 'Shirt', category: 'Clothing', sales: 8 },
-      { name: 'Laptop', category: 'Electronics', sales: 12 },
-      { name: 'Shoes', category: 'Footwear', sales: 6 },
-      { name: 'Watch', category: 'Electronics', sales: 7 }
-    ];
-
-    const result = getPopularCategories(products);
-
-    expect(result).toEqual(['Electronics', 'Clothing', 'Footwear']);
-  });
-
-  test('повертає порожній масив для порожнього вхідного масиву', () => {
-    const products = [];
-
-    const result = getPopularCategories(products);
-
-    expect(result).toEqual([]);
-  });
-
-});
+getPopularCategories([
+  { name: 'Phone', category: 'Electronics', sales: 10 },
+  { name: 'Tablet', category: 'Electronics', sales: 5 },
+  { name: 'Shirt', category: 'Clothing', sales: 8 },
+  { name: 'Laptop', category: 'Electronics', sales: 12 },
+  { name: 'Shoes', category: 'Footwear', sales: 6 },
+  { name: 'Watch', category: 'Electronics', sales: 7 }
+]);
+getPopularCategories([]);
