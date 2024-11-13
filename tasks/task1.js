@@ -1,22 +1,33 @@
-// Задача 1: Написати функцію, яка повертає найпопулярніші товарні категорії на основі продажів.
-// Спочатку фільтруємо товари, які продані більше 5 разів, потім сортуємо їх за кількістю продажів,
-// а потім залишаємо тільки унікальні категорії товарів.
-"ВИКОРИСТОВУВАТИ ЛИШЕ МЕТОДИ МАСИВІВ filter, map, sort. Для того щоб залишити лише унікальні категорії товарів можна використати конструкцію new Set, або використати метод filter()/indexOf()/forEach()"
-
 function getPopularCategories(products) {
-  //Ваш код
+  // Спочатку фільтруємо продукти, де продажі більше 5
+  const filteredProducts = products.filter(product => product.sales > 5);
+
+  // Створюємо масив для унікальних категорій
+  const uniqueCategories = [];
+
+  // Для кожного продукту беремо категорію
+  filteredProducts.forEach(product => {
+    // Якщо категорії ще немає в масиві, додаємо її
+    if (uniqueCategories.indexOf(product.category) === -1) {
+      uniqueCategories.push(product.category);
+    }
+  });
+
+  // Повертаємо масив з унікальними категоріями
+  return uniqueCategories;
 }
 
 // Приклад використання:
 const products = [
-  { name: 'Phone', category: 'Electronics', sales: 10 },
-  { name: 'Tablet', category: 'Electronics', sales: 3 },
-  { name: 'Shirt', category: 'Clothing', sales: 8 },
-  { name: 'Laptop', category: 'Electronics', sales: 12 },
-  { name: 'Jacket', category: 'Clothing', sales: 2 },
-  { name: 'Shoes', category: 'Footwear', sales: 6 },
-  { name: 'Watch', category: 'Electronics', sales: 7 }
+  { name: 'Apple', category: 'Fruit', sales: 12 },
+  { name: 'Banana', category: 'Fruit', sales: 3 },
+  { name: 'Carrot', category: 'Vegetable', sales: 8 },
+  { name: 'Lettuce', category: 'Vegetable', sales: 2 },
+  { name: 'Bread', category: 'Bakery', sales: 7 },
+  { name: 'Milk', category: 'Dairy', sales: 10 },
+  { name: 'Eggs', category: 'Dairy', sales: 6 }
 ];
 
-console.log(getPopularCategories(products)); // ['Electronics', 'Clothing', 'Footwear']
+console.log(getPopularCategories(products)); // ['Fruit', 'Vegetable', 'Bakery', 'Dairy']
+
 module.exports = getPopularCategories;
